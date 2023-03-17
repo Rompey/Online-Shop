@@ -1,0 +1,18 @@
+version: "3.3"
+services:
+  mysql:
+    image: mysql/mysql-server:8.0
+    ports:
+      - target: 3306
+        published: 3306
+        protocol: tcp
+        mode: host
+    restart: always
+    environment:
+      MYSQL_DATABASE: campaign
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - mysql-data:/var/lib/mysql
+volumes:
+  mysql-data:
