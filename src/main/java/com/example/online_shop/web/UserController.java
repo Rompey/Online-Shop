@@ -1,32 +1,35 @@
 package com.example.online_shop.web;
 
-import com.example.online_shop.mappers.UserMapper;
 import com.example.online_shop.model.User;
 import com.example.online_shop.model.dto.UserDTO;
-import com.example.online_shop.repository.UserRepository;
+import com.example.online_shop.model.dto.UserRegistrationDTO;
+import com.example.online_shop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    @DeleteMapping
+    @DeleteMapping("/r/")
     public void deleteUser(User user) {
-        userRepository.delete(user);
+        userService.deleteUser(user);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public Page<UserDTO> getUsers(Pageable pageable) {
-        Page<User> users = userRepository.findAll(pageable);
-        return UserMapper.USER_MAPPER.map(users);
+        return userService.getUsers(pageable);
+    }
+
+    @PutMapping
+    public UserDTO updateUser(UserRegistrationDTO userRegistrationDTO, String login){
+        return userService.updateUser(userRegistrationDTO, login);
     }
 }

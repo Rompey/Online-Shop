@@ -21,8 +21,8 @@ public class ProductController {
     }
 
     @GetMapping("/pn/{productName}")
-    public ProductDTO getProductById(@PathVariable("productName") String productName) {
-        return productService.getProductById(productName);
+    public ProductDTO getProductByName(@PathVariable("productName") String productName) {
+        return productService.getProductByName(productName);
     }
 
     @PostMapping("/add")

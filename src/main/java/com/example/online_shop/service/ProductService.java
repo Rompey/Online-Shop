@@ -23,7 +23,7 @@ public class ProductService {
         return ProductMapper.MAPPER.map(products);
     }
 
-    public ProductDTO getProductById(String productName) {
+    public ProductDTO getProductByName(String productName) {
         Product product = productRepository.findProductByProductName(productName);
         return ProductMapper.MAPPER.map(product);
     }
