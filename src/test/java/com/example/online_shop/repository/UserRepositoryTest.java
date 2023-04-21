@@ -22,9 +22,9 @@ class UserRepositoryTest {
     private RoleRepository roleRepository;
 
     @Test
-    void testFindUserByLogin() {
-        String login = "testuser";
-        String name = "Test User";
+    void findUserByLoginTest() {
+        String login = "testUser";
+        String name = "User";
         String password = "password";
 
         Role role = new Role();
@@ -40,7 +40,7 @@ class UserRepositoryTest {
 
         userRepository.save(user);
 
-        Optional<User> optionalUser = userRepository.findUserByLogin(login);
+        Optional<User> optionalUser = userRepository.findUserByLoginOptional(login);
 
         Assertions.assertTrue(optionalUser.isPresent());
         User retrievedUser = optionalUser.get();

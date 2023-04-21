@@ -9,24 +9,24 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping
 @RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping
+    @GetMapping("/products")
     public Page<ProductDTO> getProducts(Pageable pageable) {
             return productService.getProducts(pageable);
     }
 
-    @GetMapping("/pn/{productName}")
+    @GetMapping("/products/pn/{productName}")
     public ProductDTO getProductByName(@PathVariable("productName") String productName) {
         return productService.getProductByName(productName);
     }
 
-    @PostMapping("/add")
-    public ProductDTO addNewProductIfNotExist(@RequestBody ProductDTO productDTO) {
-        return productService.addNewProductIfNotExist(productDTO);
+    @PostMapping("/products/add")
+    public ProductDTO addNewProduct(@RequestBody ProductDTO productDTO) {
+        return productService.addNewProduct(productDTO);
     }
 }

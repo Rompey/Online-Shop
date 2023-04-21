@@ -14,7 +14,7 @@ import java.util.Objects;
 public class JwtUtil {
 
     private static final String SECRET_KEY = "ahgfyuQIGWRGQryi211iou2rho23.qiuhfow2oi";
-    private static final Integer TOKEN_VALIDITY = 60 * 30 * 30;
+    private static final Integer TOKEN_VALIDITY = 60 * 60 * 24;
 
     public static Boolean validateToken(String token, UserDetails userDetails) {
         String username = getUsername(token);

@@ -17,17 +17,21 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public void deleteUser(User user) {
-        userRepository.delete(user);
+
+    public void deleteUser(String login) {
+        User findUser = userRepository.findUserByLogin(login);
+        userRepository.delete(findUser);
     }
+
 
     public Page<UserDTO> getUsers(Pageable pageable) {
         Page<User> users = userRepository.findAll(pageable);
         return UserMapper.USER_MAPPER.map(users);
     }
 
+
     public UserDTO updateUser(UserRegistrationDTO userDTO, String login) {
-        return userRepository.findUserByLogin(login)
+        return userRepository.findUserByLoginOptional(login)
                 .map(user -> {
                     user.setName(userDTO.name());
                     user.setLogin(userDTO.login());

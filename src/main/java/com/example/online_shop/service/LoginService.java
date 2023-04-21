@@ -33,7 +33,7 @@ public class LoginService {
     }
 
     private User getUserIfLoginAndPasswordAreCorrect(String login, String password) {
-        Optional<User> optionalUser = userRepository.findUserByLogin(login);
+        Optional<User> optionalUser = userRepository.findUserByLoginOptional(login);
 
         optionalUser.ifPresent(user -> {
             boolean equals = ArgonUtil.matches(password, user.getPassword());

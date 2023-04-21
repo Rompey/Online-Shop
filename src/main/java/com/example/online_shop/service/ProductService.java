@@ -28,7 +28,7 @@ public class ProductService {
         return ProductMapper.MAPPER.map(product);
     }
 
-    public ProductDTO addNewProductIfNotExist(ProductDTO productDTO) {
+    public ProductDTO addNewProduct(ProductDTO productDTO) {
         Product product = productRepository.save(buildProduct(productDTO));
         return new ProductDTO(product.getProductName(),
                 product.getDescription(),
