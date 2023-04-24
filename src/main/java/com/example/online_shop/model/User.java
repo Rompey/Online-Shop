@@ -14,7 +14,7 @@ import java.util.Locale;
 @Setter
 @Table(schema = "public", name = "users")
 @Builder
-@Where(clause = "deleted = false")
+@Where(clause = "is_deleted = false")
 public class User {
 
     @Id
@@ -26,8 +26,8 @@ public class User {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_roles")
     private Role role;
-    @Column(name = "is_deleted")
-    private Boolean isDeleted;
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted = Boolean.FALSE;
 
     public void setLogin(String login) {
         this.login = StringUtils.lowerCase(login, Locale.ENGLISH);

@@ -18,11 +18,9 @@ public class UserService {
     private final UserRepository userRepository;
 
 
-    public void deleteUser(String login) {
-        User findUser = userRepository.findUserByLogin(login);
-        userRepository.delete(findUser);
+    public void deleteUser(String  login) {
+        userRepository.deleteUserByLogin(login);
     }
-
 
     public Page<UserDTO> getUsers(Pageable pageable) {
         Page<User> users = userRepository.findAll(pageable);
