@@ -8,6 +8,7 @@ import com.example.online_shop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
@@ -18,9 +19,12 @@ public class UserService {
     private final UserRepository userRepository;
 
 
-    public void deleteUser(String  login) {
-        userRepository.deleteUserByLogin(login);
+    public void deleteUser(String login) {
+        User user = userRepository.findUserByLoginOptional(login)
+                        .orElseThrow(() -> new UsernameNotFoundException("This login doesn't exist"));
+        userRepository.deleteById(user.getId());
     }
+
 
     public Page<UserDTO> getUsers(Pageable pageable) {
         Page<User> users = userRepository.findAll(pageable);
