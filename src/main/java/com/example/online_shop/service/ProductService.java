@@ -4,6 +4,7 @@ import com.example.online_shop.mappers.ProductMapper;
 import com.example.online_shop.model.Product;
 import com.example.online_shop.model.dto.ProductDTO;
 import com.example.online_shop.repository.ProductRepository;
+import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +25,8 @@ public class ProductService {
     }
 
     public ProductDTO getProductByName(String productName) {
-        Product product = productRepository.findProductByProductName(productName);
+        Product product = productRepository.findProductByProductName(productName)
+                .orElseThrow(() -> new NotFoundException("Product not found"));
         return ProductMapper.MAPPER.map(product);
     }
 

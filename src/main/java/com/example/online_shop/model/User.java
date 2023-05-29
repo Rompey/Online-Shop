@@ -8,6 +8,8 @@ import org.hibernate.annotations.Where;
 import java.util.Locale;
 
 @Entity
+@NamedEntityGraph(name = "user",
+        attributeNodes = {@NamedAttributeNode("role")})
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

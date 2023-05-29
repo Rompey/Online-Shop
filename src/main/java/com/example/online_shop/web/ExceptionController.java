@@ -1,5 +1,6 @@
 package com.example.online_shop.web;
 
+import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +13,17 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ExceptionController {
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<Error> getError(AccessDeniedException accessDeniedException){
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(showErrorMessage((accessDeniedException)));
+    public ResponseEntity<Error> getAccessError(RuntimeException exception){
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(showErrorMessage((exception)));
     }
 
-    private Error showErrorMessage(AccessDeniedException accessDeniedException) {
-        return new Error(accessDeniedException.getMessage());
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Error> getNotFoundError(RuntimeException exception){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(showErrorMessage(exception));
+    }
+
+    private Error showErrorMessage(RuntimeException exception) {
+        return new Error(exception.getMessage());
     }
 
     private record Error(String errorMessage) {

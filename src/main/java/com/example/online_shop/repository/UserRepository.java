@@ -1,6 +1,7 @@
 package com.example.online_shop.repository;
 
 import com.example.online_shop.model.User;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,6 +13,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
+    @EntityGraph(value = "user")
     @Query("SELECT u FROM User u WHERE u.login = ?1")
     Optional<User> findUserByLoginOptional(String login);
 
