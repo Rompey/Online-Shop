@@ -2,32 +2,56 @@ package com.example.online_shop.service;
 
 import com.example.online_shop.model.Card;
 import com.example.online_shop.model.dto.CardDTO;
+import com.example.online_shop.model.dto.CreateCardDTO;
+import com.example.online_shop.model.dto.UserDTO;
 import com.example.online_shop.repository.CardRepository;
+import com.example.online_shop.utils.ArgonUtil;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CardService {
 
     private final CardRepository cardRepository;
+    private final UserService userService;
 
-    public CardDTO addNewCard(CardDTO cardDTO) {
+    @Transactional
+    public CardDTO addNewCard(CreateCardDTO cardDTO) {
         Card card = cardRepository.save(buildCard(cardDTO));
-        return new CardDTO(card.getName(),
-                card.getCardNumber(),
-                card.getCardValidity(),
-                card.getCvv(),
-                card.isExpired());
+        return getCardDTO(card);
     }
 
-    private Card buildCard(CardDTO cardDTO) {
+    public List<CardDTO> getCards() {
+        List<Card> cards = cardRepository.findAll();
+        return cards.stream()
+                .map(this::getCardDTO)
+                .collect(Collectors.toList());
+    }
+
+    @NotNull
+    private CardDTO getCardDTO(Card card) {
+        return new CardDTO(card.getName(),
+                card.getCardNumber(),
+                card.getCvv(),
+                card.getCardValidity(),
+                card.getUserId().stream()
+                        .map(user -> new UserDTO(user.getName(), user.getLogin()))
+                        .collect(Collectors.toList()));
+    }
+
+    private Card buildCard(CreateCardDTO cardDTO) {
         return Card.builder()
                 .name(cardDTO.name())
                 .cardNumber(cardDTO.cardNumber())
                 .cardValidity(cardDTO.cardValidity())
-                .cvv(cardDTO.cvv())
-                .isExpired(cardDTO.isExpired())
+                .cvv(ArgonUtil.hashCVV(cardDTO.cvv()))
+                .userId(List.of(userService.buildUser(cardDTO.usersId())))
                 .build();
     }
 }

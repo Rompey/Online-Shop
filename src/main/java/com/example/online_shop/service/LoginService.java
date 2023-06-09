@@ -36,7 +36,7 @@ public class LoginService {
         Optional<User> optionalUser = userRepository.findUserByLoginOptional(login);
 
         optionalUser.ifPresent(user -> {
-            boolean equals = ArgonUtil.matches(password, user.getPassword());
+            boolean equals = ArgonUtil.matchesUserPassword(password, user.getPassword());
             if (!equals) {
                 throw new AccessDeniedException("Password is incorrect");
             }

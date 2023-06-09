@@ -23,11 +23,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+    @Column(unique = true)
     private String login;
     private String password;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_roles")
     private Role role;
+
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = Boolean.FALSE;
 

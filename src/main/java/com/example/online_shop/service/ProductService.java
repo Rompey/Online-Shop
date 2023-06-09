@@ -32,6 +32,10 @@ public class ProductService {
 
     public ProductDTO addNewProduct(ProductDTO productDTO) {
         Product product = productRepository.save(buildProduct(productDTO));
+        return getProductDTO(product);
+    }
+
+    private ProductDTO getProductDTO(Product product) {
         return new ProductDTO(product.getProductName(),
                 product.getDescription(),
                 product.getManufactureDate(),
