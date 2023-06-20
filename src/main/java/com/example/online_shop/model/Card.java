@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 
 @Entity
@@ -24,7 +23,7 @@ public class Card {
     @Column(length = 16,
             unique = true)
     private String cardNumber;
-    private Timestamp cardValidity = Timestamp.from(Instant.now().plusSeconds(94608000));
+    private Timestamp cardValidity;
     private boolean isExpired = Boolean.FALSE;
     private String cvv;
     @ManyToMany(fetch = FetchType.LAZY,

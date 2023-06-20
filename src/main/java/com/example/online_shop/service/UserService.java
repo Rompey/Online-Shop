@@ -9,10 +9,8 @@ import com.example.online_shop.repository.UserRepository;
 import com.example.online_shop.utils.ArgonUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
@@ -26,15 +24,15 @@ public class UserService {
     @Transactional
     public void deleteUser(String login) {
         User user = userRepository.findUserByLoginOptional(login)
-                .orElseThrow(() -> new UsernameNotFoundException("This login doesn't exist"));
+                .orElseThrow(() -> new NotFoundException("This login doesn't exist"));
         userRepository.deleteById(user.getId());
     }
 
-    public Page<UserDTO> getUsers(Pageable pageable) {
-        Page<User> users = userRepository.findAll(pageable);
-        return UserMapper.USER_MAPPER.map(users);
+    public Page<User> getUsers(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
+    @Transactional
     public UserDTO updateUser(UserRegistrationDTO userDTO, String login) {
         return userRepository.findUserByLoginOptional(login)
                 .map(user -> getUserDTO(userDTO, user)).orElseThrow(() -> new NotFoundException("User not found"));
@@ -46,12 +44,15 @@ public class UserService {
         return getUserDTO(save);
     }
 
-    @NotNull
+    protected User getUserByNameAndLogin(String name, String login){
+        return userRepository.findUserByNameAndLogin(name, login);
+    }
+
     private UserDTO getUserDTO(User save) {
         return new UserDTO(save.getName(), save.getLogin());
     }
 
-    protected User buildUser(UserRegistrationDTO userDTO) {
+    private User buildUser(UserRegistrationDTO userDTO) {
         return User.builder()
                 .name(userDTO.name())
                 .login(userDTO.login())

@@ -1,5 +1,6 @@
 package com.example.online_shop.web;
 
+import com.example.online_shop.model.User;
 import com.example.online_shop.model.dto.UserDTO;
 import com.example.online_shop.model.dto.UserRegistrationDTO;
 import com.example.online_shop.service.UserService;
@@ -24,7 +25,7 @@ public class UserController {
     }
 
     @GetMapping("adm/users")
-    public Page<UserDTO> getUsers(Pageable pageable) {
+    public Page<User> getUsers(Pageable pageable) {
         return userService.getUsers(pageable);
     }
 

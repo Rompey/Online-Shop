@@ -17,7 +17,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT u FROM User u WHERE u.login = ?1")
     Optional<User> findUserByLoginOptional(String login);
 
+    @EntityGraph(value = "user")
+    User findUserByNameAndLogin(String name, String login);
+
     @Modifying
-    @Query("UPDATE User u SET u.isDeleted=true WHERE u.id=:id")
+    @Query("UPDATE User u SET u.isDeleted = true WHERE u.id=:id")
     void deleteById(@Param("id") Integer id);
 }

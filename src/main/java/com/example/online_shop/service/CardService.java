@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,9 +51,9 @@ public class CardService {
         return Card.builder()
                 .name(cardDTO.name())
                 .cardNumber(cardDTO.cardNumber())
-                .cardValidity(cardDTO.cardValidity())
+                .cardValidity(Timestamp.from(Instant.now().plusSeconds(94608000)))
                 .cvv(ArgonUtil.hashCVV(cardDTO.cvv()))
-                .userId(List.of(userService.buildUser(cardDTO.usersId())))
+                .userId(List.of(userService.getUserByNameAndLogin(cardDTO.userId().name(), cardDTO.userId().login())))
                 .build();
     }
 }

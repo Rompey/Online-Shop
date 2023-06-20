@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -19,7 +20,7 @@ public class CardController {
     @PostMapping(value = "/cards/add")
     public ResponseEntity<CardDTO> addNewCard(@RequestBody CreateCardDTO createCardDTO) {
         CardDTO cardDTO = cardService.addNewCard(createCardDTO);
-        return ResponseEntity.ok(cardDTO);
+        return ResponseEntity.created(URI.create("/cards/add")).body(cardDTO);
     }
 
     @GetMapping(value = "/cards")

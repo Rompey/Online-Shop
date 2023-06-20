@@ -13,8 +13,10 @@ import java.util.Objects;
 @Component
 public class JwtUtil {
 
+    private JwtUtil(){}
+
     private static final String SECRET_KEY = "ahgfyuQIGWRGQryi211iou2rho23.qiuhfow2oi";
-    private static final Integer TOKEN_VALIDITY = 60 * 60 * 24;
+    private static final Long TOKEN_VALIDITY = 2678400L;
 
     public static Boolean validateToken(String token, UserDetails userDetails) {
         String username = getUsername(token);
