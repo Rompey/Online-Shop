@@ -49,4 +49,9 @@ class UserRepositoryTest {
         Assertions.assertEquals(retrievedUser.getPassword(), password);
         Assertions.assertEquals(retrievedUser.getRole().getId(), role.getId());
     }
+
+    @Test
+    void deleteUser(){
+
+    }
 }

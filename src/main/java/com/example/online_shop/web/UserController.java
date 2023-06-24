@@ -1,7 +1,9 @@
 package com.example.online_shop.web;
 
 import com.example.online_shop.model.User;
+import com.example.online_shop.model.dto.TokenDTO;
 import com.example.online_shop.model.dto.UserDTO;
+import com.example.online_shop.model.dto.UserLoginDTO;
 import com.example.online_shop.model.dto.UserRegistrationDTO;
 import com.example.online_shop.service.UserService;
 import jakarta.validation.Valid;
@@ -19,9 +21,10 @@ public class UserController {
 
     private final UserService userService;
 
-    @DeleteMapping("/users/r/{login}")
-    public void deleteUser(@PathVariable(name = "login") String login) {
-        userService.deleteUser(login);
+    @DeleteMapping("/users/r/{login}/{password}")
+    public void deleteUser(@PathVariable(name = "login") String login,
+                           @PathVariable(name = "password") String password) {
+        userService.deleteUser(login, password);
     }
 
     @GetMapping("adm/users")
@@ -38,5 +41,11 @@ public class UserController {
     public ResponseEntity<UserDTO> saveUser(@RequestBody @Valid UserRegistrationDTO userRegistrationDTO){
         UserDTO userDTO = userService.saveUser(userRegistrationDTO);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<TokenDTO> loginUser(@RequestBody UserLoginDTO userLoginDTO){
+        TokenDTO tokenDTO = userService.createToken(userLoginDTO);
+        return ResponseEntity.ok(tokenDTO);
     }
 }
