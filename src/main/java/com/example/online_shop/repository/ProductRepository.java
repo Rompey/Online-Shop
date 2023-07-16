@@ -12,9 +12,9 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
-    @Query("SELECT p FROM Product p")
-    Page<Product> findAllProductsInPageFormat(Pageable pageable);
-
     @Query("SELECT p FROM Product p WHERE p.productName=?1")
     Optional<Product> findProductByProductName(String name);
+
+    @Query("SELECT p FROM Product p ORDER BY p.price")
+    Page<Product> findProductsAndSortByPrice(Pageable pageable);
 }

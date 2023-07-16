@@ -2,10 +2,7 @@ package com.example.online_shop.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Where;
-
-import java.util.Locale;
 
 @Entity
 @NamedEntityGraph(name = "user",
@@ -32,8 +29,4 @@ public class User {
 
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = Boolean.FALSE;
-
-    public void setLogin(String login) {
-        this.login = StringUtils.lowerCase(login, Locale.ENGLISH);
-    }
 }

@@ -1,4 +1,4 @@
-package com.example.online_shop.web;
+package com.example.online_shop.controller;
 
 import com.example.online_shop.model.dto.ProductDTO;
 import com.example.online_shop.service.ProductService;
@@ -28,5 +28,10 @@ public class ProductController {
     @PostMapping("/products/add")
     public ProductDTO addNewProduct(@RequestBody ProductDTO productDTO) {
         return productService.addNewProduct(productDTO);
+    }
+
+    @GetMapping("products/sort/price")
+    public Page<ProductDTO> getProductsSortedByPrice(Pageable pageable){
+        return productService.getProductsSortedByPrice(pageable);
     }
 }

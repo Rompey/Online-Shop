@@ -1,4 +1,4 @@
-package com.example.online_shop.web;
+package com.example.online_shop.controller;
 
 import com.example.online_shop.model.User;
 import com.example.online_shop.model.dto.TokenDTO;
@@ -32,19 +32,25 @@ public class UserController {
         return userService.getUsers(pageable);
     }
 
-    @PutMapping("/users/u")
-    public UserDTO updateUser(@RequestBody UserRegistrationDTO userRegistrationDTO, String login) {
-        return userService.updateUser(userRegistrationDTO, login);
+    @GetMapping("adm/users_by_role/{roleName}")
+    public Page<User> getUsersByRoleName(@PathVariable(name = "roleName") String roleName,
+                                         Pageable pageable) {
+        return userService.getUsersByRoleName(roleName, pageable);
+    }
+
+    @PutMapping("/users/u/{login}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable(name = "login") String login) {
+        return ResponseEntity.ok(userService.updateUser(login));
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<UserDTO> saveUser(@RequestBody @Valid UserRegistrationDTO userRegistrationDTO){
+    public ResponseEntity<UserDTO> saveUser(@RequestBody @Valid UserRegistrationDTO userRegistrationDTO) {
         UserDTO userDTO = userService.saveUser(userRegistrationDTO);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDTO> loginUser(@RequestBody UserLoginDTO userLoginDTO){
+    public ResponseEntity<TokenDTO> loginUser(@RequestBody UserLoginDTO userLoginDTO) {
         TokenDTO tokenDTO = userService.createToken(userLoginDTO);
         return ResponseEntity.ok(tokenDTO);
     }

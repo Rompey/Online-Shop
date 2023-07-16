@@ -1,4 +1,4 @@
-package com.example.online_shop.web;
+package com.example.online_shop.controller;
 
 import com.example.online_shop.model.dto.CardDTO;
 import com.example.online_shop.model.dto.CreateCardDTO;
@@ -23,7 +23,7 @@ public class CardController {
         return ResponseEntity.created(URI.create("/cards/add")).body(cardDTO);
     }
 
-    @GetMapping(value = "/cards")
+    @GetMapping(value = "/adm/cards")
     public List<CardDTO> getCards() {
         return cardService.getCards();
     }

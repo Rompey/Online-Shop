@@ -1,4 +1,4 @@
-package com.example.online_shop.web;
+package com.example.online_shop.controller;
 
 import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;

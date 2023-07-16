@@ -39,10 +39,14 @@ public class UserService {
         return userRepository.findAll(pageable);
     }
 
+    public Page<User> getUsersByRoleName(String roleName, Pageable pageable){
+        return userRepository.findUsersByRoleName(roleName, pageable);
+    }
+
     @Transactional
-    public UserDTO updateUser(UserRegistrationDTO userDTO, String login) {
+    public UserDTO updateUser(String login) {
         return userRepository.findUserByLoginOptional(login)
-                .map(user -> getUserDTO(userDTO, user)).orElseThrow(() -> new NotFoundException("User not found"));
+                .map(this::getUserDTO1).orElseThrow(() -> new NotFoundException("User not found"));
     }
 
     public UserDTO saveUser(UserRegistrationDTO userRegistrationDTO) {
@@ -75,10 +79,10 @@ public class UserService {
                 .build();
     }
 
-    private UserDTO getUserDTO(UserRegistrationDTO userDTO, User user) {
-        user.setName(userDTO.name());
-        user.setLogin(userDTO.login());
-        user.setPassword(userDTO.password());
+    private UserDTO getUserDTO1(User user) {
+        user.setName(user.getName());
+        user.setLogin(user.getLogin());
+        user.setPassword(user.getPassword());
         User save = userRepository.save(user);
         return UserMapper.USER_MAPPER.map(save);
     }

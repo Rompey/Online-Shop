@@ -12,8 +12,8 @@
     <artifactId>demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>demo</name>
-    <description>demo</description>
+    <name>online_shop</name>
+    <description>online_shop</description>
     <properties>
         <java.version>18</java.version>
     </properties>

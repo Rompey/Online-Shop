@@ -19,7 +19,7 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     public Page<ProductDTO> getProducts(Pageable pageable) {
-        Page<Product> products = productRepository.findAllProductsInPageFormat(pageable);
+        Page<Product> products = productRepository.findAll(pageable);
         return ProductMapper.MAPPER.map(products);
     }
 
@@ -32,6 +32,11 @@ public class ProductService {
     public ProductDTO addNewProduct(ProductDTO productDTO) {
         Product product = productRepository.save(buildProduct(productDTO));
         return getProductDTO(product);
+    }
+
+    public Page<ProductDTO> getProductsSortedByPrice(Pageable pageable){
+        Page<Product> products = productRepository.findProductsAndSortByPrice(pageable);
+        return ProductMapper.MAPPER.map(products);
     }
 
     private ProductDTO getProductDTO(Product product) {

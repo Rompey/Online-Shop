@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,8 +31,7 @@ public class CardService {
     public List<CardDTO> getCards() {
         List<Card> cards = cardRepository.findAll();
         return cards.stream()
-                .map(this::getCardDTO)
-                .collect(Collectors.toList());
+                .map(this::getCardDTO).toList();
     }
 
     @NotNull
@@ -43,8 +41,7 @@ public class CardService {
                 card.getCvv(),
                 card.getCardValidity(),
                 card.getUserId().stream()
-                        .map(user -> new UserDTO(user.getName(), user.getLogin()))
-                        .collect(Collectors.toList()));
+                        .map(user -> new UserDTO(user.getName(), user.getLogin())).toList());
     }
 
     private Card buildCard(CreateCardDTO cardDTO) {
