@@ -38,9 +38,11 @@ public class UserController {
         return userService.getUsersByRoleName(roleName, pageable);
     }
 
-    @PutMapping("/users/u/{login}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable(name = "login") String login) {
-        return ResponseEntity.ok(userService.updateUser(login));
+    @PostMapping("/users/u/{login}/{password}")
+    public void updateUser(@PathVariable(name = "login") String login,
+                           @PathVariable(name = "password") String password,
+                           @RequestBody UserRegistrationDTO userRegistrationDTO) {
+        userService.updateUser(login, password, userRegistrationDTO);
     }
 
     @PostMapping("/registration")

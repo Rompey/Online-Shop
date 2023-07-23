@@ -20,7 +20,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-    @Column(unique = true)
     private String login;
     private String password;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

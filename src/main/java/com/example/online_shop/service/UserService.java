@@ -1,6 +1,5 @@
 package com.example.online_shop.service;
 
-import com.example.online_shop.mappers.UserMapper;
 import com.example.online_shop.model.User;
 import com.example.online_shop.model.dto.TokenDTO;
 import com.example.online_shop.model.dto.UserDTO;
@@ -16,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,15 +37,20 @@ public class UserService {
         return userRepository.findAll(pageable);
     }
 
-    public Page<User> getUsersByRoleName(String roleName, Pageable pageable){
+    public Page<User> getUsersByRoleName(String roleName, Pageable pageable) {
         return userRepository.findUsersByRoleName(roleName, pageable);
     }
 
     @Transactional
-    public UserDTO updateUser(String login) {
-        return userRepository.findUserByLoginOptional(login)
-                .map(this::getUserDTO1).orElseThrow(() -> new NotFoundException("User not found"));
+    public void updateUser(String login, String password, UserRegistrationDTO userRegistrationDTO) {
+        User user = getUserIfLoginAndPasswordAreCorrect(login, password);
+        userRepository.changeUserCredentials(
+                userRegistrationDTO.name(),
+                userRegistrationDTO.login(),
+                ArgonUtil.hashPassword(userRegistrationDTO.password()),
+                user.getId());
     }
+
 
     public UserDTO saveUser(UserRegistrationDTO userRegistrationDTO) {
         User save = userRepository.save(buildUser(userRegistrationDTO));
@@ -77,14 +80,6 @@ public class UserService {
                 .password(ArgonUtil.hashPassword(userDTO.password()))
                 .role(roleRepository.findRoleByName("USER"))
                 .build();
-    }
-
-    private UserDTO getUserDTO1(User user) {
-        user.setName(user.getName());
-        user.setLogin(user.getLogin());
-        user.setPassword(user.getPassword());
-        User save = userRepository.save(user);
-        return UserMapper.USER_MAPPER.map(save);
     }
 
     private Map<String, Object> buildClaims(User user) {

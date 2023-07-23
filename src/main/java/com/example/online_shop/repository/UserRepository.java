@@ -27,4 +27,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("SELECT u FROM User u WHERE u.role.name =?1")
     Page<User> findUsersByRoleName(String roleName, Pageable pageable);
+
+    @Modifying
+    @Query("UPDATE User u SET u.name=:name, u.login=:login, u.password=:password WHERE u.id=:id")
+    void changeUserCredentials(@Param("name") String name,
+                               @Param("login") String login,
+                               @Param("password") String password,
+                               @Param("id") Integer id);
 }
