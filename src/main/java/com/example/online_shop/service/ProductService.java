@@ -35,7 +35,7 @@ public class ProductService {
     }
 
     public Page<ProductDTO> getProductsSortedByPrice(Pageable pageable){
-        Page<Product> products = productRepository.findProductsAndSortByPrice(pageable);
+        Page<Product> products = productRepository.findProductsSortedByPrice(pageable);
         return ProductMapper.MAPPER.map(products);
     }
 

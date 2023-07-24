@@ -16,5 +16,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     Optional<Product> findProductByProductName(String name);
 
     @Query("SELECT p FROM Product p ORDER BY p.price")
-    Page<Product> findProductsAndSortByPrice(Pageable pageable);
+    Page<Product> findProductsSortedByPrice(Pageable pageable);
 }
